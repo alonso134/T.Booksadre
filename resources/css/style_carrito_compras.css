@@ -1,0 +1,358 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #babababa;
+ 
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.cart {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 20px;
+}
+
+.item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.price {
+    color: #007bff;
+    font-size: 18px;
+}
+
+.remove-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+.total {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.total h3 {
+    color: #333;
+    font-size: 24px;
+}
+
+.total-price {
+    color: #28a745;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+.checkout-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.checkout-btn:hover {
+    background-color: #218838;
+}
+
+/* lo que falta*/
+
+/*menu*/
+
+.menu {
+    text-align: left;
+}
+
+.bg-body-tertiary {
+    --bs-bg-opacity: 1;
+    background-color: #0D1B2A !important;
+}
+
+.navbar {
+    --bs-navbar-brand-color: rgb(255 255 255);
+}
+
+.navbar-brand {
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.navbar-brand img {
+    width: 20%;
+    height: 20%;
+}
+
+.navbar-nav .nav-item {
+    margin-top: 10px;
+}
+
+.navbar-toggler-icon {
+    background-color: rgb(255, 255, 255);
+}
+
+button.navbar-toggler {
+    background-color: white;
+    margin-left: auto; /* Mueve el botón hacia la derecha */
+    
+}
+.nav-link i{
+    color: white;
+    font-size: 1.0em;
+    transition: 0.3s;
+    font-size: 1.5em;
+}
+.nav-link:hover i{
+color: gray;
+}
+
+.nav-links{
+    color: white;
+    font-size: 1.5em;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.nav-links:hover{
+    color: gray; 
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link-text{
+    color: white;
+    font-size: 1.5em;
+    transition: 0.3s;
+    text-decoration: none;
+    font-family: "Inter Tight", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 723;
+    font-style: normal;
+}
+
+.nav-link-text:hover{
+   color: gray;
+}
+
+.textdescubre{
+    color: #373737;
+    font-size: 1.5em;
+    transition: 0.3s;
+    text-decoration: none;
+    font-family: "Inter Tight", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 723;
+    font-style: normal;
+    text-align: center;
+}
+
+/* .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  } */
+
+
+  /* Estilos para el footer */
+footer {
+    background-color: #415a77;
+    
+  }
+
+.columna{
+    color: black;
+    font-size: 25px;
+}
+
+.bx{
+    color: black
+}
+
+
+/* Cards de ¿Como comprar en línea? */
+
+.card{
+    height: 400px;
+}
+
+
+.bg-custom-color{
+    background-color: #979797;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #757575;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+  }
+
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+  #main {
+    transition: margin-left .5s;
+    padding: 16px;
+  }
+
+  .dropdown-submenu {
+    position: relative;
+  }
+
+  .dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .btn-wrapper {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .white-box {
+    width: 200px;
+    height: 100px;
+    background-color: #989797;
+    border: 2px solid #989797;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+
+  /* Login publico */ 
+
+.login-form {
+    /* Tu estilo actual */
+    width: 400px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #B4B3B3;
+    position: absolute;
+    top: 80%; /* Ajusta esta posición según sea necesario */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Centro los elementos del formulario */
+}
+.form-group {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+input[type="text"],
+input[type="password"],
+button {
+    width: calc(100% - 10px);
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 200px;
+    
+}
+button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Registro publico */
+
+
+.login-forms {
+    /* Tu estilo actual */
+    width: 500px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #B4B3B3;
+    position: absolute;
+    top: 80%; /* Ajusta esta posición según sea necesario */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Centro los elementos del formulario */
+}

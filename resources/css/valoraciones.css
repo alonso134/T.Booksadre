@@ -1,0 +1,95 @@
+/* CSS existente */
+.titulo {
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.carta-comentario {
+    border-bottom: 1px solid #ccc;
+    background-color: white;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.comentario-imagen {
+    flex-shrink: 0;
+}
+
+.comentario-contenido {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.d-flex.align-items-center.mb-2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+}
+
+.rating {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    display: inline-block;
+    position: relative;
+    font-size: 1.5em;
+}
+
+.rating > label {
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+    cursor: pointer;
+    margin-right: 2px; /* Ajuste de espacio entre estrellas */
+}
+
+.rating > label::before {
+    content: "\2605";
+}
+
+.rating > input {
+    display: none;
+}
+
+.rating > input:checked ~ label::before {
+    color: gold;
+}
+
+.rating > input:checked + label::before {
+    color: gold;
+}
+
+/* CSS para las estrellas del promedio */
+.star-container {
+    display: inline-block;
+    font-size: 2em;
+    position: relative;
+}
+
+.star {
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+    cursor: default;
+    color: lightgray;
+}
+
+.star.full:before {
+    content: "\2605";
+    position: absolute;
+    color: gold;
+}
+
+.star.half:before {
+    content: "\2605";
+    position: absolute;
+    background: linear-gradient(90deg, gold 50%, lightgray 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
