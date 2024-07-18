@@ -1,23 +1,18 @@
-
 <!DOCTYPE html>
 <!-- Declaración del idioma para el documento -->
 <html lang="es">
 
 <head>
     <!-- Título del documento -->
-    <title>Categorias</title>
-
+    <title></title>
     <!-- Metadatos de la página web -->
     <meta charset="utf-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- IMPORTACIÓN DE RECURSOS EXTERNOS -->
     <!-- Llamada al icono de la página web -->
     <link type="image/png" rel="icon" href="../../resources/img/logo.png">
-
     <!-- Llamada a las hojas de estilos del framework e iconos -->
-    
     <link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -25,10 +20,7 @@
 </head>
 
 <body>
-
-
-<br>
-
+    <br>
     <!-- Contenido principal del documento -->
     <main>
         <!-- Título del contenido principal -->
@@ -89,7 +81,7 @@
                     <form id="saveForm">
                         <div class="modal-body row g-3">
                             <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                            <input type="hidden" id="idCategoria" name="idCategoria">
+                            <input type="number" class="d-none" id="idCategoria" name="idCategoria">
                             <div class="col-sm-12 col-md-6">
                                 <label for="nombreCategoria" class="form-label">Nombre</label>
                                 <input id="nombreCategoria" type="text" name="nombreCategoria" class="form-control"
@@ -100,7 +92,7 @@
                                 <input id="descripcionCategoria" type="text" name="descripcionCategoria"
                                     class="form-control">
                             </div>
-                            <div class="col-sm-w12 col-md-6">
+                            <div class="col-sm-12 col-md-6">
                                 <label for="imagenCategoria" class="form-label">Imagen</label>
                                 <input id="imagenCategoria" type="file" name="imagenCategoria" class="form-control"
                                     accept=".png, .jpg">
@@ -113,11 +105,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- Componente Modal para mostrar un gráfico -->
+        <div class="modal fade" id="chartModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="chartTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="chartTitle">Gráfico de la categoría</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- Contenedor para mostrar el gráfico -->
+                    <div class="modal-body" id="chartContainer"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
     <!-- Llamada al framework y librería de mensajes -->
     <script type="text/javascript" src="../../resources/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada a la librería para generar los gráficos. Para más información https://www.chartjs.org/ -->
+    <script type="text/javascript" src="../../resources/js/chart.umd.min.js"></script>
     <!-- Llamada al controlador general de la aplicación -->
     <script type="text/javascript" src="../../controllers/utils/components.js"></script>
     <!-- Llamada al controlador del sitio privado -->
