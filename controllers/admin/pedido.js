@@ -241,7 +241,7 @@ const openUpdate = async (id_pedido) => {
         ID_PEDIDO.value = ROW.id_pedido;
         DIRECCION_PEDIDO.value = ROW.direccion_pedido;
         FECHA_PEDIDO.value = ROW.fecha_registro;
-        fillSelect(CLIENTE_API, 'clientePedido', ROW.id_cliente);
+        fillSelect(CLIENTE_API, 'readAll', 'clientePedido', ROW.id_cliente);
         fillSelect(PEDIDO_API, 'getEstados', 'estadoPedido', ROW.estado_pedido);
     } else {
         sweetAlert(2, DATA.error, false);

@@ -104,8 +104,6 @@ class PedidoHandler
             $params = array($this->id_pedido);
             return Database::executeRow($sql, $params);
         }
-        
-
 
 
 
