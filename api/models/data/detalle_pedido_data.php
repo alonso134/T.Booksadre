@@ -2,22 +2,36 @@
 // Se incluye la clase para validar los datos de entrada.
 require_once('../../helpers/validator.php');
 // Se incluye la clase padre.
-require_once('../../models/handler/pedido_handler.php');
+require_once('../../models/handler/detalle_pedido_handler.php');
 /*
-*	Clase para manejar el encapsulamiento de los datos de las tablas PEDIDO y DETALLE_PEDIDO.
-*/
-class DetalleData extends DetallesPedidosHandler
+ *	Clase para manejar el encapsulamiento de los datos de la tabla PRODUCTO.
+ */
+class DetallePedidosData extends DetallesPedidosHandler
 {
-    // Atributo genérico para manejo de errores.
+    /*
+     *  Atributos adicionales.
+     */
     private $data_error = null;
+    private $filename = null;
 
     /*
-    *   Métodos para validar y establecer los datos.
-    */
-    public function setIdPedido($value)
+     *   Métodos para validar y establecer los datos.
+     */
+    public function setId($value)
     {
         if (Validator::validateNaturalNumber($value)) {
-            $this->id_pedido = $value;
+            $this->id = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador del id es incorrecto';
+            return false;
+        }
+    }
+
+    public function setPedidoId($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->pedido = $value;
             return true;
         } else {
             $this->data_error = 'El identificador del pedido es incorrecto';
@@ -25,29 +39,7 @@ class DetalleData extends DetallesPedidosHandler
         }
     }
 
-    public function setIdDetalle($value)
-    {
-        if (Validator::validateNaturalNumber($value)) {
-            $this->id_detalle = $value;
-            return true;
-        } else {
-            $this->data_error = 'El identificador del detalle pedido es incorrecto';
-            return false;
-        }
-    }
-
-    public function setCliente($value)
-    {
-        if (Validator::validateNaturalNumber($value)) {
-            $this->cliente = $value;
-            return true;
-        } else {
-            $this->data_error = 'El identificador del cliente es incorrecto';
-            return false;
-        }
-    }
-
-    public function setProducto($value)
+    public function setProductoId($value)
     {
         if (Validator::validateNaturalNumber($value)) {
             $this->producto = $value;
@@ -58,20 +50,60 @@ class DetalleData extends DetallesPedidosHandler
         }
     }
 
+
+
+
     public function setCantidad($value)
     {
-        if (Validator::validateNaturalNumber($value)) {
+        if (Validator::validateMoney($value)) {
             $this->cantidad = $value;
-            return true;
+            if ($this->setExistenciasDisponibles($value) == true) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            $this->data_error = 'La cantidad del producto debe ser mayor o igual a 1';
+            $this->data_error = 'La cantidad debe ser un valor numérico';
             return false;
         }
     }
 
-    // Método para obtener el error de los datos.
+    public function setExistenciasDisponibles($value)
+    {
+        if ($data = $this->validarExistencias()) {
+            if ($value > $data['existencias_producto']) {
+                $this->data_error = 'La cantidad solicitada supera las existencias disponibles del producto';
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            $this->data_error = 'El producto que intentas comprar no está disponible en nuestro inventario';
+            return false;
+        }
+    }
+    public function setExistencias($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            //    $this->existencias = $value;
+            return true;
+        } else {
+            $this->data_error = 'El valor de las existencias debe ser numérico entero';
+            return false;
+        }
+    }
+
+
+    /*
+     *  Métodos para obtener los atributos adicionales.
+     */
     public function getDataError()
     {
         return $this->data_error;
+    }
+
+    public function getFilename()
+    {
+        return $this->filename;
     }
 }

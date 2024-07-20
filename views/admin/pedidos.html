@@ -32,10 +32,13 @@
         <!-- Formulario de búsqueda -->
         <form class="col-sm-12 col-md-6" id="searchForm">
             <div class="row">
-                <div class="col-6">
-                    <input type="search" class="form-control" name="search" placeholder="Buscar" required>
+                <div class="col-3">
+                    <input type="date" class="form-control" name="startDate" required>
                 </div>
-                <div class="col-6">
+                <div class="col-3">
+                    <input type="date" class="form-control" name="endDate" required>
+                </div>
+                <div class="col row-2">
                     <button type="submit" class="btn btn-success">
                         <i class="bi bi-search"></i>
                     </button>
@@ -46,13 +49,13 @@
             </div>
         </form>
         <div class="col-sm-12 col-md-6 text-end">
-            <!-- Botón para abrir una caja de diálogo al momento de crear un nuevo registro -->
+             <!-- Botón para abrir una caja de diálogo al momento de crear un nuevo registro -->
             <button type="button" class="btn btn-primary" onclick="openCreate()">
                 <i class="bi bi-plus-square-fill"></i>
             </button>
         </div>
     </div>
-  
+
     <br>
   
   <!-- Tabla para mostrar los registros existentes -->
@@ -60,11 +63,12 @@
     <!-- Encabezado de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
     <thead>
         <tr>
-            <td colspan="8" id="rowsFound"></td>
+            <td colspan="5" id="rowsFound"></td>
         </tr>
         <tr>
+            <th>FECHA</th>
             <th>CLIENTE</th>
-            <th>DIRECCIÓN</th>
+            <th>DIRRECCION</th>
             <th>ESTADO</th>
             <th>ACCIONES</th>
         </tr>
@@ -73,43 +77,115 @@
     <tbody id="tableBody"></tbody>
 </table>
 
-<!-- Componente Modal para guardar un registro -->
-<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-6" id="modalTitle"></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Componente Modal para guardar un registro -->
+        <div id="saveModalContainer" style="display: none;">
+            <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="modalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modalTitle"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <!-- Formulario para crear o actualizar un registro -->
+                        <form id="saveForm">
+                            <div class="modal-body row g-3">
+                                <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                                <input type="number" class="d-none" id="idPedido" name="idPedido">
+                                <div class="col-sm-12 col-md-6">
+                                    <label for="clientePedido" class="form-label">Cliente</label>
+                                    <select id="clientePedido" name="clientePedido" class="form-select" required>
+                                    </select>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <label for="direccionPedido" class="form-label">Dirección</label>
+                                    <input id="direccionPedido" type="text" name="direccionPedido" class="form-control"
+                                        placeholder="Ej: Calle San Antonio, #23, Col. Santa Lucia, SS" required>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <label for="fechaPedido" class="form-label">Fecha de registro</label>
+                                    <input id="fechaPedido" type="date" name="fechaPedido" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <label for="estadoPedido" class="form-label">Estado</label>
+                                    <select id="estadoPedido" name="estadoPedido" class="form-select" required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <!-- Formulario para guardar un registro -->
-            <form id="saveForm">
-                <div class="modal-body row g-6">
-                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idPedido" name="idPedido">
-                    <div class="col-sm-12 col-md-6">
-                        <label for="clientePedido" class="form-label">CLIENTE</label>
-                        <select id="clientePedido" name="clientePedido" class="form-select" required>
-                        </select>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="direccionPedido" class="form-label">DIRECCIÓN</label>
-                        <input id="direccionPedido" type="text" name="direccionPedido"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-check form-switch form-check-reverse">
-                        <input class="form-check-input" type="checkbox" id="estadoPedido"
-                            name="estadoPedido" checked>
-                        <label class="form-check-label" for="estadoPedido">Estado</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-            </form>
         </div>
-    </div>
-</div>
+
+        <!-- Componente CRUD para guardar los productos del pedido -->
+        <div id="crudModalContainer" style="display: none;">
+            <div class="modal fade" id="crudModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="crudTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="crudTitle"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <!-- Formulario para crear o actualizar un registro -->
+                        <div class="modal-body row g-3">
+                            <!-- Formulario para crear o actualizar un registro -->
+                            <form id="saveCrud" class="needs-validation" novalidate>
+                                <div class="row g-3">
+                                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                                    <input type="hidden" id="idDetallePedido" name="idDetallePedido">
+                                    <input type="hidden" id="idPedidoCRUD" name="idPedidoCRUD">
+                                    <div class="col-md-6">
+                                        <label for="productoDetalleP" class="form-label">Producto</label>
+                                        <select id="productoDetalleP" name="productoDetalleP" class="form-select"
+                                            required>
+                                            <option value="">Seleccione un producto</option>
+                                            <!-- Opciones de productos -->
+                                        </select>
+                                        <div class="invalid-feedback">Por favor, seleccione un producto.</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="cantidadDetalleP" class="form-label">Cantidad</label>
+                                        <input id="cantidadDetalleP" type="number" name="cantidadDetalleP" min="0.01"
+                                            step="0.01" class="form-control" required>
+                                        <div class="invalid-feedback">Por favor, ingrese una cantidad válida.</div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer border-0 mt-4">
+                                    <button type="submit" class="btn btn-success">Guardar</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <td colspan="5" id="crudFound"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio unitario</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="crudBody">
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
 <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
