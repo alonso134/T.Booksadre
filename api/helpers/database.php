@@ -103,7 +103,7 @@ class Database
                 self::$error;
                 break;
             case '42S22':
-                self::$error = 'Columna no encontrada';
+                
                 break;
             case '23000':
                 self::$error;

@@ -40,6 +40,7 @@ class DetallesPedidosHandler
     }
 
 
+
     public function readAll()
     {
         $sql = 'SELECT id_detalle, pedido.id_cliente,  nombre_cliente, nombre_producto, cantidad_producto, 
@@ -52,16 +53,15 @@ class DetallesPedidosHandler
         $params = array($this->pedido);
         return Database::getRows($sql, $params);
     }
-
     public function readOne()
     {
-        $sql = 'SELECT detalle_pedido_id, pedido.cliente_id,  nombre_cliente, nombre_producto, cantidad, 
-        detalle_pedido.precio_producto, subtotal, direccion_pedido, pedido.pedido_id AS pedido_id, detalle_pedido.producto_id
+        $sql = 'SELECT id_detalle, pedido.id_cliente,  nombre_cliente, nombre_producto, cantidad_producto, 
+        detalle_pedido.precio_producto, direccion_pedido, pedido.id_pedido AS id_pedido, detalle_pedido.id_producto
         FROM detalle_pedido
-        INNER JOIN pedido ON detalle_pedido.pedido_id = pedido.pedido_id
-        INNER JOIN producto ON detalle_pedido.producto_id = producto.producto_id
-        INNER JOIN cliente ON pedido.cliente_id = cliente.cliente_id
-                WHERE detalle_pedido_id = ?';
+        INNER JOIN pedido ON detalle_pedido.id_pedido = pedido.id_pedido
+        INNER JOIN producto ON detalle_pedido.id_producto = producto.id_producto
+        INNER JOIN cliente ON pedido.id_cliente = cliente.id_cliente
+                WHERE id_detalle = ?';
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
