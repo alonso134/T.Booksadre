@@ -13,8 +13,72 @@ class PedidoHandler
     protected $id_detalle = null;
     protected $cliente = null;
     protected $producto = null;
+    protected $direccion = null;
     protected $cantidad = null;
     protected $estado = null;
+
+
+    /*
+    pedido sitio privado
+    */
+
+    /*
+     *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
+     */
+    public function searchRows()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = 'SELECT id_pedido, nombre_cliente, direccion_pedido, estado_pedido
+                FROM pedido
+                INNER JOIN cliente USING(id_cliente)
+                WHERE nombre_cliente LIKE ? OR direccion_pedido LIKE ?
+                ORDER BY nombre_cliente';
+        $params = array($value, $value);
+        return Database::getRows($sql, $params);
+    }
+
+    public function createRow()
+    {
+        $sql = 'INSERT INTO pedido(id_cliente, direccion_pedido, estado_pedido)
+                VALUES(?, ?, ?)';
+        $params = array($this->cliente, $this->direccion, $this->estado);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function readAll()
+    {
+        $sql = 'SELECT id_pedido, nombre_cliente, direccion_pedido, estado_pedido
+                FROM pedido
+                INNER JOIN cliente USING(id_cliente)
+                ORDER BY nombre_cliente';
+        return Database::getRows($sql);
+    }
+
+    public function readOne()
+    {
+        $sql = 'SELECT id_pedido, id_cliente, direccion_pedido, estado_pedido
+                FROM pedido
+                WHERE id_pedido = ?';
+        $params = array($this->id_pedido);
+        return Database::getRow($sql, $params);
+    }
+
+    public function updateRow()
+    {
+        $sql = 'UPDATE pedido
+                SET id_cliente = ?, direccion_pedido = ?, estado_pedido = ?
+                WHERE id_pedido = ?';
+        $params = array($this->cliente, $this->direccion, $this->estado, $this->id_pedido);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function deleteRow()
+    {
+        $sql = 'DELETE FROM pedido
+                WHERE id_pedido = ?';
+        $params = array($this->id_pedido);
+        return Database::executeRow($sql, $params);
+    }
 
     /*
     *   ESTADOS DEL PEDIDO
