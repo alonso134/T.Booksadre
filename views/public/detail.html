@@ -56,53 +56,12 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="row">
-                <h5>Comentarios</h5>
-                <div class="col-md-8">
-                    <div id="comentariosCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner" id="comentarios">
-                            <!-- Los comentarios se cargarán aquí -->
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#comentariosCarousel"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#comentariosCarousel"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <!-- Formulario para agregar comentarios -->
-                    <div class="">
-                        <div class="card-header">Agregar Comentario</div>
-                        <div class="card-body">
-                            <form id="comentarioForm">
-                                <div class="mb-3">
-                                    <label for="comentario" class="form-label">Comentarios:</label>
-                                    <textarea class="form-control" id="comentario" name="comentario" rows="3"
-                                        placeholder="Escribe tu comentario"></textarea>
-                                </div>
-                                <div class="rating-container">
-                                    <div class="rating">
-                                        <input type="radio" name="star" id="star5" value="5"><label for="star5"></label>
-                                        <input type="radio" name="star" id="star4" value="4"><label for="star4"></label>
-                                        <input type="radio" name="star" id="star3" value="3"><label for="star3"></label>
-                                        <input type="radio" name="star" id="star2" value="2"><label for="star2"></label>
-                                        <input type="radio" name="star" id="star1" value="1"><label for="star1"></label>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Enviar</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+    <!-- Sección para mostrar comentarios y valoraciones -->
+    <div id="comentariosValoraciones">
+        <!-- Aquí se llenarán dinámicamente los comentarios y valoraciones -->
+    </div>
+
     </main>
 
     <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
@@ -115,10 +74,6 @@
     <script type="text/javascript" src="../../controllers/utils/public.js"></script>
     <!-- Llamada al controlador de la página web -->
     <script type="text/javascript" src="../../controllers/public/detail.js"></script>
-    <!-- Estrellas-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <!--Estrellas js-->
-    <script type="text/javascript" src="../../controllers/public/estrellas.js"></script>
 </body>
 
 </html>

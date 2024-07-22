@@ -1,12 +1,10 @@
 // Constantes para completar la ruta de la API.
 const PRODUCTO_API = 'services/public/producto.php';
 const PEDIDO_API = 'services/public/pedido.php';
-const VALORACIONES_API = 'services/public/resena.php';
 // Constante tipo objeto para obtener los parámetros disponibles en la URL.
 const PARAMS = new URLSearchParams(location.search);
 // Constante para establecer el formulario de agregar un producto al carrito de compras.
 const SHOPPING_FORM = document.getElementById('shoppingForm');
-const COMENTARIO_FORM = document.getElementById('comentarioForm');
 
 // Método del eventos para cuando el documento ha cargado.
 document.addEventListener('DOMContentLoaded', async () => {
@@ -34,8 +32,65 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Se limpia el contenido cuando no hay datos para mostrar.
         document.getElementById('detalle').innerHTML = '';
     }
-    cargarComentarios();
 });
+
+
+// Método para llenar los comentarios y valoraciones del producto.
+async function fillCommentsAndRatings() {
+    // Obtener el ID del producto actual
+    const productId = document.getElementById('idProducto').value;
+
+    // Llamada al backend para obtener los comentarios y valoraciones
+    const formData = new FormData();
+    formData.append('idProducto', productId);
+
+    const comentariosValoraciones = document.getElementById('comentariosValoraciones');
+
+    const comentariosValoracionesData = await fetchData(PRODUCTO_API, 'getCommentsAndRatings', formData);
+
+    if (comentariosValoracionesData.status && Array.isArray(comentariosValoracionesData.dataset)) {
+        comentariosValoraciones.innerHTML = '';  
+
+        comentariosValoracionesData.dataset.forEach(comment => {
+            const formattedDate = formatDate(comment.fecha_valoracion);
+
+            comentariosValoraciones.innerHTML += `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">${comment.nombre_cliente} ${comment.apellido_cliente}</h5>
+                        <div class="mb-2">
+                            ${generateStars(comment.calificacion)}
+                        </div>
+                        <h6 class="card-subtitle mb-2 text-muted">${formattedDate}</h6>
+                        <p class="card-text">${comment.comentario}</p>
+                    </div>
+                </div>
+            `;
+        });
+    } else {
+        comentariosValoraciones.innerHTML = '<p>No hay comentarios ni valoraciones disponibles.</p>';
+    }
+}
+
+// Función para generar estrellas basadas en la calificación
+function generateStars(calificacion) {
+    let stars = '';
+    for (let i = 0; i < 5; i++) {
+        if (i < calificacion) {
+            stars += '<i class="bi bi-star-fill" style="color: gold;"></i>';
+        } else {
+            stars += '<i class="bi bi-star" style="color: gold;"></i>';
+        }
+    }
+    return stars;
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
 
 // Método del evento para cuando se envía el formulario de agregar un producto al carrito.
 SHOPPING_FORM.addEventListener('submit', async (event) => {
@@ -44,7 +99,7 @@ SHOPPING_FORM.addEventListener('submit', async (event) => {
     // Constante tipo objeto con los datos del formulario.
     const FORM = new FormData(SHOPPING_FORM);
     // Petición para guardar los datos del formulario.
-    const DATA = await fetchData(PEDIDO_API, 'insertarDetalle', FORM);
+    const DATA = await fetchData(PEDIDO_API, 'createDetail', FORM);
     // Se comprueba si la respuesta es satisfactoria, de lo contrario se constata si el cliente ha iniciado sesión.
     if (DATA.status) {
         sweetAlert(1, DATA.message, false, 'cart.html');
@@ -54,93 +109,3 @@ SHOPPING_FORM.addEventListener('submit', async (event) => {
         sweetAlert(3, DATA.error, true, 'login.html');
     }
 });
-
-
-// Método del evento para cuando se envía el formulario de agregar un producto al carrito.
-COMENTARIO_FORM.addEventListener('submit', async (event) => {
-    // Se evita recargar la página web después de enviar el formulario.
-    event.preventDefault();
-
-    const radios = document.getElementsByName('star');
-    let seleccion = null;
-
-    for (const radio of radios) {
-        if (radio.checked) {
-            seleccion = radio.value;
-            break;
-        }
-    }
-    console.log(seleccion);
-    console.log(PARAMS.get('id'))
-    // Constante tipo objeto con los datos del formulario.
-    const FORM = new FormData(COMENTARIO_FORM);
-    FORM.append('valoracion', seleccion);
-    FORM.append('producto', PARAMS.get('id'));
-    // Petición para guardar los datos del formulario.
-    const DATA = await fetchData(VALORACIONES_API, 'createRow', FORM);
-    try {
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se constata si el cliente ha iniciado sesión.
-        if (DATA.status) {
-            sweetAlert(1, DATA.message, false);
-            cargarComentarios();
-            COMENTARIO_FORM.reset();
-        }
-        else if (!DATA.exception) {
-            sweetAlert(3, DATA.error, true);
-        } else {
-            sweetAlert(3, DATA.exception, true);
-        }
-    } catch (error) {
-        sweetAlert(3, "Debe iniciar sesión para hacer un comentario al producto", true);
-    }
-});
-
-async function cargarComentarios(listacomentarios = null) {
-    const contenedorComentarios = document.getElementById('comentarios');
-    try {
-        const FORM = new FormData();
-        FORM.append('idProducto', PARAMS.get('id'));
-        const data = await fetchData(VALORACIONES_API, 'readOne', FORM);
-        listacomentarios = data.dataset;
-        console.log(listacomentarios);
-
-        contenedorComentarios.innerHTML = '';
-        listacomentarios.forEach((valoracion, index) => {
-            const isActive = index === 0 ? 'active' : '';
-            const valoracionHtml = `
-            <div class="carousel-item ${isActive}">
-                <div class="carta-comentario d-flex align-items-start">
-                    <div class="comentario-contenido ms-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <h5 class="card-title mb-0 me-3">${valoracion.NOMBRE}</h5>
-                            <div class="rating">
-                                <input type="radio" id="star5_${index}" name="rating_${index}" value="5"><label for="star5_${index}"></label>
-                                <input type="radio" id="star4_${index}" name="rating_${index}" value="4"><label for="star4_${index}"></label>
-                                <input type="radio" id="star3_${index}" name="rating_${index}" value="3"><label for="star3_${index}"></label>
-                                <input type="radio" id="star2_${index}" name="rating_${index}" value="2"><label for="star2_${index}"></label>
-                                <input type="radio" id="star1_${index}" name="rating_${index}" value="1"><label for="star1_${index}"></label>
-                            </div>
-                        </div>
-                        <p class="card-text">${valoracion.COMENTARIO}</p>
-                    </div>
-                </div>
-            </div>
-            `;
-            contenedorComentarios.innerHTML += valoracionHtml;
-        });
-
-        // Marcar las estrellas según la calificación
-        listacomentarios.forEach((valoracion, index) => {
-            const nota = valoracion.CALIFICACIÓN;
-            if (nota) {
-                document.getElementById(`star${nota}_${index}`).checked = true;
-                // Desactivar las estrellas para que no sean interactivas
-                for (let i = 1; i <= 5; i++) {
-                    document.getElementById(`star${i}_${index}`).disabled = true;
-                }
-            }
-        });
-    } catch (error) {
-        console.error('Error al obtener datos de la API:', error);
-    }
-}
