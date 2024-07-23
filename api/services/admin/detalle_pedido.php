@@ -45,8 +45,8 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'Venta creada correctamente';
                 } else {
                     // Error general al crear la venta
-                    $result['error'] = 'Ocurrió un problema al crear el detalle de la venta';
-                    error_log('Error al crear la venta: Ocurrió un problema al crear la venta');
+                    $result['error'] = 'Ocurrió un problema al crear el detalle de el pedido';
+                    error_log('Error al crear el pedido: Ocurrió un problema al crear la pedido');
                 }
                 break;
                 /*     case 'readAll':
@@ -63,7 +63,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $venta->readAll()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Detalle de ventas inexistente';
+                    $result['error'] = 'Detalle de pedido inexistente';
                 }
                 break;
             case 'readOne':
@@ -72,7 +72,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $venta->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Detalle de ventas inexistente';
+                    $result['error'] = 'Detalle de pedido inexistente';
                 }
                 break;
             case 'updateRow':
@@ -87,7 +87,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Detalle del pedido modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar la venta';
+                    $result['error'] = 'Ocurrió un problema al modificar el pedido';
                 }
                 break;
             case 'deleteRow':

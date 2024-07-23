@@ -1,7 +1,7 @@
 // Constante para completar la ruta de la API.
 
-const DETALLE_API = 'services/admin/detalle.php';
-const PEDIDO_API = 'services/admin/pedidos.php';
+const DETALLE_API = 'services/admin/detalle_pedido.php';
+const PEDIDO_API = 'services/admin/pedido.php';
 const PRODUCTO_API = 'services/admin/producto.php';
 // Constante para establecer el formulario de buscar.
 const SEARCH_FORM = document.getElementById('searchForm');

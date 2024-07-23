@@ -36,6 +36,23 @@ class ProductoHandler
         return Database::getRows($sql, $params);
     }
 
+
+    public function getCategoria()
+    {
+        $this->estado = 'Pendiente';
+        $sql = 'SELECT id_pedido
+                FROM pedido
+                WHERE estado_pedido = ? AND id_cliente = ?';
+        $params = array($_SESSION['idCliente']);
+        if ($data = Database::getRow($sql, $params)) {
+            $_SESSION['idPedido'] = $data['id_pedido'];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public function createRow()
     {
         $sql = 'INSERT INTO producto(nombre_producto, descripcion_producto, precio_producto, existencias_producto, imagen_producto, estado_producto, id_categoria, id_administrador)

@@ -40,7 +40,6 @@ class DetallesPedidosHandler
     }
 
 
-
     public function readAll()
     {
         $sql = 'SELECT id_detalle, pedido.id_cliente,  nombre_cliente, nombre_producto, cantidad_producto, 
@@ -53,6 +52,7 @@ class DetallesPedidosHandler
         $params = array($this->pedido);
         return Database::getRows($sql, $params);
     }
+
     public function readOne()
     {
         $sql = 'SELECT id_detalle, pedido.id_cliente,  nombre_cliente, nombre_producto, cantidad_producto, 

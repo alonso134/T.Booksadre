@@ -4,7 +4,7 @@ require_once('../../helpers/database.php');
 /*
 *	Clase para manejar el comportamiento de los datos de las tablas PEDIDO y DETALLE_PEDIDO.
 */
-class PedidosHandler
+class PedidoPublicHandler
 {
     /*
     *   Declaración de atributos para el manejo de datos.
@@ -38,7 +38,7 @@ class PedidosHandler
         $this->estado = 'Pendiente';
         $sql = 'SELECT id_pedido 
                 FROM pedido
-                WHERE estado_pedido = ? AND cliente_id = ?';
+                WHERE estado_pedido = ? AND id_cliente = ?';
         $params = array($this->estado, $_SESSION['idCliente']);
         if ($data = Database::getRow($sql, $params)) {
             $_SESSION['idPedido'] = $data['id_pedido'];
@@ -53,8 +53,8 @@ class PedidosHandler
         if ($this->getOrder()) {
             return true;
         } else {
-            $sql = 'INSERT INTO pedido(direccion_pedido, id_pedido)
-                    VALUES((SELECT direccion_cliente FROM cliente WHERE id_pedido = ?), ?)';
+            $sql = 'INSERT INTO pedido(direccion_pedido, id_cliente)
+                    VALUES((SELECT direccion_cliente FROM cliente WHERE id_cliente = ?), ?)';
             $params = array($_SESSION['idCliente'], $_SESSION['idCliente']);
             // Se obtiene el ultimo valor insertado de la llave primaria en la tabla pedido.
             if ($_SESSION['idPedido'] = Database::getLastRow($sql, $params)) {
@@ -66,7 +66,7 @@ class PedidosHandler
     }
     public function getHistory()
     {
-        $sql = 'SELECT id_detalle , nombre_producto, detalle_pedido.precio_producto, cantidad_producto, estado_pedido
+        $sql = 'SELECT id_detalle, nombre_producto, detalle_pedido.precio_producto, cantidad_producto, estado_pedido
                 FROM detalle_pedido
                 INNER JOIN pedido USING(id_pedido)
                 INNER JOIN producto USING(id_producto)
@@ -79,7 +79,7 @@ class PedidosHandler
         $sql = 'SELECT id_detalle, nombre_producto, detalle_pedido.precio_producto, detalle_pedido.cantidad_producto AS cantidad_producto , detalle_pedido.id_producto AS id_producto
                 FROM detalle_pedido
                 INNER JOIN pedido USING(id_pedido)
-                INNER JOIN producto USING(id_pedido)
+                INNER JOIN producto USING(id_producto)
                 WHERE id_pedido = ?';
         $params = array($_SESSION['idPedido']);
         return Database::getRows($sql, $params);
@@ -120,7 +120,7 @@ class PedidosHandler
     public function updateDetail()
     {
         $sql = 'UPDATE detalle_pedido
-                SET cantidad = ?
+                SET cantidad_producto = ?
                 WHERE id_detalle = ? AND id_pedido = ?';
     
         $params = array($this->cantidad, $this->id_detalle, $_SESSION['idPedido']);
@@ -133,7 +133,7 @@ class PedidosHandler
     {
         $this->estado = 'Finalizado';
 
-        $sql = 'SELECT id_producto, cantidad FROM detalle_pedido WHERE id_pedido = ?';
+        $sql = 'SELECT id_producto, cantidad_producto FROM detalle_pedido WHERE id_pedido = ?';
         $params = array($_SESSION['idPedido']);
         $orderDetails = Database::getRows($sql, $params);
 
@@ -143,7 +143,7 @@ class PedidosHandler
             $params = array($detail['id_producto']);
             $currentStock = Database::getRow($sql, $params);
 
-            $newStock = $currentStock['existencias_producto'] - $detail['cantidad'];
+            $newStock = $currentStock['existencias_producto'] - $detail['cantidad_producto'];
 
             $sql = 'UPDATE producto SET existencias_producto = ? WHERE id_producto = ?';
             $params = array($newStock, $detail['id_producto']);
@@ -171,7 +171,7 @@ class PedidosHandler
         $sql = 'SELECT id_producto, imagen_producto, nombre_producto, descripcion_producto, precio_producto, existencias_producto
                 FROM producto
                 INNER JOIN categoria USING(id_categoria)
-                WHERE id_categoria = ? AND estado = true
+                WHERE id_categoria  = ? AND estado_producto = true
                 ORDER BY nombre_producto';
         $params = array($this->categoria);
         return Database::getRows($sql, $params);
@@ -183,7 +183,7 @@ class PedidosHandler
                 INNER JOIN detalle_pedido dp USING(id_pedido)
                 INNER JOIN producto USING(id_producto)
                 LEFT JOIN valoracion USING(id_producto)
-                WHERE pedido.id_cliente  = ? AND pedido.estado_pedido = "Finalizado"';
+                WHERE pedido.id_cliente = ? AND pedido.estado_pedido = "Finalizado"';
         $params = array($_SESSION['idCliente']);
         return Database::GetRows($sql, $params);
     }
@@ -201,10 +201,10 @@ class PedidosHandler
 
 
 
-    public function getValoracionByProducto($producto_id)
+    public function getValoracionByProducto($id_producto)
     {
         $sql = 'SELECT id_valoracion  FROM valoracion WHERE id_producto = ? AND id_cliente = ?';
-        $params = array($producto_id, $_SESSION['idCliente']);
+        $params = array($id_producto, $_SESSION['idCliente']);
         return Database::getRow($sql, $params);
     }
 }
