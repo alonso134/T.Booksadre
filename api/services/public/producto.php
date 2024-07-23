@@ -28,6 +28,15 @@ if (isset($_GET['action'])) {
                 $result['error'] = 'Producto inexistente';
             }
             break;
+            case 'getCommentsAndRatings':
+                if (!isset($_POST['idProducto'])) {
+                    $result['error'] = 'Falta el id del producto';
+                } else {
+                    $producto->setId($_POST['idProducto']);
+                    $result['dataset'] = $producto->getCommentsAndRatings();
+                    $result['status'] = 1;
+                }
+                break;
         default:
             $result['error'] = 'Acción no disponible';
     }

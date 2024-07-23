@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('existenciasProducto').textContent = DATA.dataset.existencias_producto;
         document.getElementById('idProducto').value = DATA.dataset.id_producto;
 
-      // Llamar función para cargar comentarios y valoraciones
-     await fillCommentsAndRatings();
+        // Llamar función para cargar comentarios y valoraciones
+        await fillCommentsAndRatings();
     } else {
         // Se presenta un mensaje de error cuando no existen datos para mostrar.
         document.getElementById('mainTitle').textContent = DATA.error;
@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('detalle').innerHTML = '';
     }
 });
+
 
 // Método para llenar los comentarios y valoraciones del producto.
 async function fillCommentsAndRatings() {
@@ -93,6 +94,7 @@ function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
+
 
 // Método del evento para cuando se envía el formulario de agregar un producto al carrito.
 SHOPPING_FORM.addEventListener('submit', async (event) => {

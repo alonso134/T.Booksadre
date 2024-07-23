@@ -118,8 +118,8 @@ const openCreate = () => {
     // Se restauran los elementos del formulario.
     SAVE_FORM.reset();
     ID_VALORACION.value = '';
-    fillSelect(CLIENTE_API, 'getClientes', 'clienteValoracion');
-    fillSelect(PRODUCTO_API, 'getProductos', 'productoValoracion');
+    fillSelect(CLIENTE_API, 'readAll', 'clienteValoracion');
+    fillSelect(PRODUCTO_API, 'readAll', 'productoValoracion');
     const fechaActual = new Date();
     const fechaFormateada = fechaActual.toISOString().split('T')[0];
     FECHA_VALORACION.value = fechaFormateada;
@@ -157,8 +157,8 @@ const openUpdate = async (id) => {
             console.log(ROW.estado_valoracion)
         )
         ESTADO_VALORACION.value =  ROW.estado_valoracion;
-        fillSelect(CLIENTE_API, 'getClientes', 'clienteValoracion', ROW.id_cliente);
-        fillSelect(PRODUCTO_API, 'getProductos', 'productoValoracion', ROW.id_producto);
+        fillSelect(CLIENTE_API, 'readAll', 'clienteValoracion', ROW.id_cliente);
+        fillSelect(PRODUCTO_API, 'readAll', 'productoValoracion', ROW.id_producto);
     } else {
         sweetAlert(2, DATA.error, false);
     }

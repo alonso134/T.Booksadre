@@ -88,6 +88,16 @@ class ProductoHandler
         return Database::getRow($sql, $params);
     }
 
+    public function getCommentsAndRatings()
+    {
+        $sql = 'SELECT v.id_valoracion, v.id_producto, v.id_cliente, v.calificacion, v.comentario, v.fecha_valoracion, c.nombre_cliente, c.apellido_cliente
+        FROM valoracion v
+        JOIN cliente c ON v.id_cliente = c.id_cliente 
+        WHERE v.id_producto = ? AND v.estado_valoracion = true';
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
+    }
+    /*
     public function updateRow()
     {
         $sql = 'UPDATE producto

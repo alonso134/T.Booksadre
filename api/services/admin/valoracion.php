@@ -98,20 +98,7 @@
                         $result['error'] = 'Ocurrió un problema al eliminar la valoración';
                     }
                     break;
-                case 'cantidadProductosCategoria':
-                    if ($result['dataset'] = $valoracion->cantidadProductosCategoria()) {
-                        $result['status'] = 1;
-                    } else {
-                        $result['error'] = 'No hay datos disponibles';
-                    }
-                    break;
-                case 'porcentajeProductosCategoria':
-                    if ($result['dataset'] = $valoracion->porcentajeProductosCategoria()) {
-                        $result['status'] = 1;
-                    } else {
-                        $result['error'] = 'No hay datos disponibles';
-                    }
-                    break;
+    
                 default:
                     $result['error'] = 'Acción no disponible dentro de la sesión';
             }
