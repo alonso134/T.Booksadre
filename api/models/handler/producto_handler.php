@@ -97,24 +97,6 @@ class ProductoHandler
         $params = array($this->id);
         return Database::getRows($sql, $params);
     }
-    /*
-    public function updateRow()
-    {
-        $sql = 'UPDATE producto
-                SET imagen_producto = ?, nombre_producto = ?, descripcion_producto = ?, precio_producto = ?, estado_producto = ?, id_categoria = ?
-                WHERE id_producto = ?';
-        $params = array($this->imagen, $this->nombre, $this->descripcion, $this->precio, $this->estado, $this->categoria, $this->id);
-        return Database::executeRow($sql, $params);
-    }
-
-    public function deleteRow()
-    {
-        $sql = 'DELETE FROM producto
-                WHERE id_producto = ?';
-        $params = array($this->id);
-        return Database::executeRow($sql, $params);
-    }
-
     public function readProductosCategoria()
     {
         $sql = 'SELECT id_producto, imagen_producto, nombre_producto, descripcion_producto, precio_producto, existencias_producto
