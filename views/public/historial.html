@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!-- Declaración del idioma para el documento -->
+<html lang="es">
+
+<head>
+    <!-- Título del documento -->
+    <title></title>
+    <!-- Metadatos de la página web -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- IMPORTACIÓN DE RECURSOS EXTERNOS -->
+    <!-- Llamada al icono de la página web -->
+    <link type="image/png" rel="icon" href="../../resources/img/logo.png">
+    <!-- Llamada a las hojas de estilos del framework e iconos -->
+    <link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../../resources/css/style_inicio_public2.css">
+</head>
+
+<body>
+    <main>
+        <h4 id="mainTitle"></h4>
+        <div class="mb-3"></div>
+        <table class="table table-light table-striped">
+            <thead>
+                <tr>
+                    <th>PRODUCTO</th>
+                    <th>PRECIO (US$)</th>
+                    <th>CANTIDAD</th>
+                    <th>ESTADO</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+
+        <h4>Calificar productos</h4>
+        <button type="button" class="btn btn-primary" onclick="openCreate()">
+            <i class="bi bi-chat-dots-fill"></i>
+        </button>
+
+        <!--Modal para valoraciones-->
+        <div class="modal fade" id="itemModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header text-dark">
+                        <h5 class="modal-title" id="modalTitle">Reseña del producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="itemForm">
+                        <div class="modal-body">
+                            <div class="row">
+                                <input type="hidden" id="idValoracion" name="idValoracion">
+                                <div class="col-sm-12 col-md-6">
+                                    <label for="productoValoracion" class="form-label">Producto</label>
+                                    <select id="productoValoracion" name="productoValoracion" class="form-select"
+                                        required></select>
+                                    <div class="row mt-2">
+                                        <label for="calificacionValoracion" class="form-label">Calificación</label>
+                                        <div class="star-rating">
+                                            <input id="star-5" type="radio" name="calificacionValoracion" value="5" />
+                                            <label for="star-5" title="5 estrellas" class="bi bi-star-fill"></label>
+                                            <input id="star-4" type="radio" name="calificacionValoracion" value="4" />
+                                            <label for="star-4" title="4 estrellas" class="bi bi-star-fill"></label>
+                                            <input id="star-3" type="radio" name="calificacionValoracion" value="3" />
+                                            <label for="star-3" title="3 estrellas" class="bi bi-star-fill"></label>
+                                            <input id="star-2" type="radio" name="calificacionValoracion" value="2" />
+                                            <label for="star-2" title="2 estrellas" class="bi bi-star-fill"></label>
+                                            <input id="star-1" type="radio" name="calificacionValoracion" value="1" />
+                                            <label for="star-1" title="1 estrella" class="bi bi-star-fill"></label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 mt-3">
+                                        <label for="comentarioValoracion">Comentario</label>
+                                        <textarea class="form-control" name="comentarioValoracion"
+                                            id="comentarioValoracion" rows="3" maxlength="200"
+                                            aria-describedby="comentarioHelp"></textarea>
+                                        <div id="comentarioHelp" class="form-text">Escribe una reseña sobre el producto.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="card border-0" style="width: 18rem;">
+                                        <img id="imagenProducto" name="imagenProducto"
+                                            src="../../api/images/productos/default.png" alt="" class="img-fluid">
+                                        <div class="card-body">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+   <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio público -->
+    <script type="text/javascript" src="../../controllers/utils/public.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script type="text/javascript" src="../../controllers/public/historial.js"></script>
+</body>

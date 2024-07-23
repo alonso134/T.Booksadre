@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('precioProducto').textContent = DATA.dataset.precio_producto;
         document.getElementById('existenciasProducto').textContent = DATA.dataset.existencias_producto;
         document.getElementById('idProducto').value = DATA.dataset.id_producto;
+
+      // Llamar función para cargar comentarios y valoraciones
+     await fillCommentsAndRatings();
     } else {
         // Se presenta un mensaje de error cuando no existen datos para mostrar.
         document.getElementById('mainTitle').textContent = DATA.error;
@@ -33,7 +36,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('detalle').innerHTML = '';
     }
 });
-
 
 // Método para llenar los comentarios y valoraciones del producto.
 async function fillCommentsAndRatings() {

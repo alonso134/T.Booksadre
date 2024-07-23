@@ -219,3 +219,46 @@ footer {
     margin-left: auto; /* Asegura que el contenido se alinee a la derecha */
 
 }
+
+/*CSS DE HISTORIAL*/
+
+.star-rating {
+    display: inline-flex;
+    flex-direction: row-reverse; /* Dirección de derecha a izquierda para la selección */
+    justify-content: flex-end; /* Alinear al inicio para mantener las estrellas a la izquierda */
+  }
+  
+  .star-rating input[type=radio] {
+    display: none;
+  }
+  
+  .star-rating label {
+    font-size: 2em;
+    color: #ddd;
+    cursor: pointer;
+  }
+  
+  .star-rating input[type=radio]:checked ~ label {
+    color: #f5c518;
+  }
+  
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: #f5c518;
+  }
+  
+  .modal-body .img-container {
+    width: 100%;
+    height: 0;
+    padding-top: 100%; /* Aspect ratio 1:1 (square) */
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+  }
+  .modal-body .img-container img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top: 0;
+    left: 0;
+  }
