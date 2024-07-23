@@ -66,6 +66,9 @@ const loadTemplate = async () => {
                           <li class="nav-item ">
                           <a class="nav-link active" aria-current="page" href="../../views/admin/Pedidos.html"><i class='bx bxs-report'></i> Pedidos</a>
                         </li>
+                        <li class="nav-item ">
+                          <a class="nav-link active" aria-current="page" href="../../views/admin/valoracion.html"><i class='bx bxs-report'></i> Valoraciones</a>
+                        </li>
                           <li class="nav-item">
                             <a class="nav-link" href="../../views/admin/Clientes.html"><i class='bx bxs-user'></i> Clientes</a>
                           </li>

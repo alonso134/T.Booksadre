@@ -21,96 +21,108 @@
 
 </head>
 <body>
-  <br>
-   <!-- Contenido principal del documento -->
-   <main>
-   <!-- Título del contenido principal -->
-  <h3 id="mainTitle"></h3>
-  <div class="row">
-      <!-- Formulario de búsqueda -->
-      <form class="col-sm-12 col-md-6" id="searchForm">
-          <div class="row">
-              <div class="col-6">
-                  <input type="search" class="form-control" name="search" placeholder="Buscar" required>
-              </div>
-              <div class="col-6">
-                  <button type="submit" class="btn btn-success">
-                      <i class="bi bi-search"></i>
-                  </button>
-                  <button type="reset" class="btn btn-secondary" onclick="fillTable()">
-                      <i class="bi bi-x-square-fill"></i>
-                  </button>
-              </div>
-          </div>
-      </form>
-      <div class="col-sm-12 col-md-6 text-end">
-          <!-- Botón para abrir una caja de diálogo al momento de crear un nuevo registro -->
-          <button type="button" class="btn btn-primary" onclick="openCreate()">
-              <i class="bi bi-plus-square-fill"></i>
-          </button>
-      </div>
-  </div>
+    <br>
+    <!-- Contenido principal del documento -->
+    <main>
+    <!-- Título del contenido principal -->
+   <h3 id="mainTitle"></h3>
+    <div class="row">
+        <form class="col-sm-12 col-md-6" id="searchForm">
+            <div class="row">
+                <div class="col-6">
+                    <input type="search" class="form-control" name="search" placeholder="Buscar por nombre..."
+                        required>
+                </div>
+                <div class="col-6">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <button type="reset" class="btn btn-secondary" onclick="fillTable()">
+                        <i class="bi bi-x-square-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="col-sm-12 col-md-6 text-end">
+            <button type="button" class="btn btn-primary" onclick="openCreate()">
+                <i class="bi bi-plus-square-fill"></i>
+            </button>
+        </div>
+    </div>
 
-  <!-- Tabla para mostrar los registros existentes -->
-  <table class="table table-hover">
-      <!-- Encabezado de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
-      <thead>
-          <tr>
-              <td colspan="6" id="rowsFound"></td>
-          </tr>
-          <tr>
-              <th>CALIFICACION</th>
-              <th>COMENTARIO</th>
-              <th>FECHA</th>
-              <th>ESTADO</th>
-          </tr>
-      </thead>
-      <!-- Cuerpo de la tabla para mostrar un registro por fila -->
-      <tbody id="tableBody"></tbody>
-  </table>
+    <!-- Tables -->
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td colspan="7" id="rowsFound"></td>
+            </tr>
+            <tr>
+                <th>Producto</th>
+                <th>Cliente</th>
+                <th>Calificacion</th>
+                <th>Comentario</th>
+                <th>Fecha Valoracion</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr>
+            </tr>
+        </tbody>
+    </table>
 
-  <!-- Componente Modal para guardar un registro -->
-  <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="modalTitle" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="modalTitle"></h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <!-- Formulario para guardar un registro -->
-              <form id="saveForm">
-                  <div class="modal-body row g-3">
-                      <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                      <input type="hidden" id="idPedido" name="idPedido">
-                      <div class="col-sm-12 col-md-6">
-                          <label for="calificacionValoracion" class="form-label">CALIFICACION</label>
-                          <input id="calificacionValoracion" type="email" name="calificacionValoracion"
-                              class="form-control" required>
-                      </div>
-                      <div class="col-sm-12 col-md-6">
-                          <label for="comentarioValoracion" class="form-label">COMENTARIO</label>
-                          <input id="comentarioValoracion" type="password" name="comentarioValoracion"
-                              class="form-control" required>
-                      </div>
-                      <div class="col-sm-12 col-md-6">
-                        <label for="fechaValoracion" class="form-label">FECHA</label>
-                        <input id="fechaValoracion" type="text" name="fechaValoracion"
-                            class="form-control" required>
+    <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalTitle"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Formulario para crear o actualizar un registro -->
+                <form id="saveForm">
+                    <div class="modal-body row g-3">
+                        <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                        <input type="hidden" id="idValoracion" name="idValoracion">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="calificacionValoracion" class="form-label">Calificación</label>
+                            <input id="calificacionValoracion" type="number" name="calificacionValoracion" min="0"
+                                max="5.0" step="0.1" class="form-control" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="comentarioValoracion">Comentario</label>
+                            <textarea class="form-control" name="comentarioValoracion" id="comentarioValoracion"
+                                rows="3"></textarea>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="fechaValoracion" class="form-label">Fecha de valoracion</label>
+                            <input id="fechaValoracion" type="date" name="fechaValoracion" class="form-control"
+                                required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="clienteValoracion" class="form-label">Cliente</label>
+                            <select id="clienteValoracion" name="clienteValoracion" class="form-select" required>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="productoValoracion" class="form-label">Producto</label>
+                            <select id="productoValoracion" name="productoValoracion" class="form-select" required>
+                            </select>
+                        </div>
+                        <div class="form-check form-switch form-check-reverse">
+                            <input class="form-check-input" type="checkbox" id="estadoValoracion"
+                                name="estadoValoracion" checked>
+                            <label class="form-check-label" for="estadoValoracion">Estado</label>
+                        </div>
                     </div>
-                      <div class="form-check form-switch form-check-reverse">
-                        <input class="form-check-input" type="checkbox" id="estadoValoracion"
-                            name="estadoValoracion" checked>
-                        <label class="form-check-label" for="estadoValoracion">Estado</label>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary">Guardar</button>
-                  </div>
-              </form>
-          </div>
-      </div>
-  </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
 
 <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->

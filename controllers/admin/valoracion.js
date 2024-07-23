@@ -1,5 +1,7 @@
 // Constante para completar la ruta de la API.
 const VALORACION_API = 'services/admin/valoracion.php';
+const CLIENTE_API = 'services/admin/cliente.php';
+const PRODUCTO_API = 'services/admin/producto.php';
 // Constante para establecer el formulario de buscar.
 const SEARCH_FORM = document.getElementById('searchForm');
 // Constantes para establecer los elementos de la tabla.
@@ -10,20 +12,19 @@ const SAVE_MODAL = new bootstrap.Modal('#saveModal'),
     MODAL_TITLE = document.getElementById('modalTitle');
 // Constantes para establecer los elementos del formulario de guardar.
 const SAVE_FORM = document.getElementById('saveForm'),
-    ID_PEDIDO = document.getElementById('idPedido'),
-    ID_CLIENTE= document.getElementById('idCliente'),
-    DIRRECION_PEDIDO = document.getElementById('dirrecionPedido'),
-    ESTADO_PEDIDO = document.getElementById('EstadoPedido'),
-    FECHA_PEDIDO = document.getElementById('FechaPedido');
+    ID_VALORACION = document.getElementById('idValoracion'),
+    CALIFICACION_VALORACION = document.getElementById('calificacionValoracion');
+COMENTARIO_VALORACION = document.getElementById('comentarioValoracion'),
+    FECHA_VALORACION = document.getElementById('fechaValoracion'),
+    CLIENTE_VALORACION = document.getElementById('clienteValoracion'),
+    PRODUCTO_VALORACION = document.getElementById('productoValoracion'),
+    ESTADO_VALORACION =  document.getElementById('estadoValoracion');
 
-// Método del evento para cuando el documento ha cargado.
-document.addEventListener('DOMContentLoaded', () => {
-    // Llamada a la función para mostrar el encabezado y pie del documento.
+document.addEventListener('DOMContentLoaded', async () => {
     loadTemplate();
-    // Se establece el título del contenido principal.
-    MAIN_TITLE.textContent = 'Gestionar Comentarios';
-    // Llamada a la función para llenar la tabla con los registros existentes.
-    fillTable();
+    MAIN_TITLE.textContent = 'Gestionar valoración';
+    await fillTable();
+
 });
 
 // Método del evento para cuando se envía el formulario de buscar.
@@ -32,6 +33,8 @@ SEARCH_FORM.addEventListener('submit', (event) => {
     event.preventDefault();
     // Constante tipo objeto con los datos del formulario.
     const FORM = new FormData(SEARCH_FORM);
+    // Convertir las fechas al formato MySQL antes de enviar el formulario
+
     // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
     fillTable(FORM);
 });
@@ -41,7 +44,7 @@ SAVE_FORM.addEventListener('submit', async (event) => {
     // Se evita recargar la página web después de enviar el formulario.
     event.preventDefault();
     // Se verifica la acción a realizar.
-    (ID_PEDIDO.value) ? action = 'updateRow' : action = 'createRow';
+    (ID_VALORACION.value) ? action = 'updateRow' : action = 'createRow';
     // Constante tipo objeto con los datos del formulario.
     const FORM = new FormData(SAVE_FORM);
     // Petición para guardar los datos del formulario.
@@ -71,52 +74,56 @@ const fillTable = async (form = null) => {
     // Se verifica la acción a realizar.
     (form) ? action = 'searchRows' : action = 'readAll';
     // Petición para obtener los registros disponibles.
-    const DATA = await fetchData(CATEGORIA_API, action, form);
+    const DATA = await fetchData(VALORACION_API, action, form);
     // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
     if (DATA.status) {
         // Se recorre el conjunto de registros fila por fila.
         DATA.dataset.forEach(row => {
             // Se crean y concatenan las filas de la tabla con los datos de cada registro.
+            icon = (row.estado_valoracion == 1) ? 'bi bi-eye-fill' : 'bi bi-eye-slash-fill';
             TABLE_BODY.innerHTML += `
                 <tr>
-                    <td>${row.nombre_usuario}</td>
-                    <td>${row.id_detalle}</td>
-                    <td>${row.nombre_categoria}</td>
-                    <td>${row.id_detalle}</td>
+                    <td>${row.nombre_producto}</td>
+                    <td>${row.nombre_cliente}</td>
+                    <td>${row.calificacion}</td>
+                    <td>${row.comentario}</td>
+                    <td>${row.fecha_valoracion}</td>
+                    <td><i class="${icon}" style="color: black;"></i></td>
                     <td>
-                        <button type="button" class="btn btn-info" onclick="openUpdate(${row.id_pedido})">
+                        <button type="button" class="btn btn-info" onclick="openUpdate(${row.id_valoracion})">
                             <i class="bi bi-pencil-fill"></i>
                         </button>
-                        <button type="button" class="btn btn-danger" onclick="openDelete(${row.id_pedido})">
-                            <i class="bi bi-trash-fill"></i>
+                        <button type="button" class="btn btn-danger" onclick="openDelete(${row.id_valoracion})">
+                            <i class="bi bi-trash3"></i>
                         </button>
                     </td>
                 </tr>
             `;
         });
-        // Se muestra un mensaje de acuerdo con el resultado.
+
+        // Se muestra el número de registros encontrados.
         ROWS_FOUND.textContent = DATA.message;
     } else {
         sweetAlert(4, DATA.error, true);
     }
 }
 
-/*
-*   Función para preparar el formulario al momento de insertar un registro.
-*   Parámetros: ninguno.
-*   Retorno: ninguno.
-*/
+// Función para preparar el formulario al momento de insertar un registro.
 const openCreate = () => {
+
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Crear cliente';
-    // Se prepara el formulario.
+    // Se coloca el título para el formulario.
+    MODAL_TITLE.textContent = 'Crear valoración';
+    // Se restauran los elementos del formulario.
     SAVE_FORM.reset();
-    CORREO_CLIENTE.disabled = false;
-    CLAVE_CLIENTE.disabled = false;
-    CONFIRMAR_CLAVE.disabled = false;
+    ID_VALORACION.value = '';
+    fillSelect(CLIENTE_API, 'getClientes', 'clienteValoracion');
+    fillSelect(PRODUCTO_API, 'getProductos', 'productoValoracion');
+    const fechaActual = new Date();
+    const fechaFormateada = fechaActual.toISOString().split('T')[0];
+    FECHA_VALORACION.value = fechaFormateada;
 }
-
 
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -126,21 +133,32 @@ const openCreate = () => {
 const openUpdate = async (id) => {
     // Se define una constante tipo objeto con los datos del registro seleccionado.
     const FORM = new FormData();
-    FORM.append('idPedido', id);
+    FORM.append('idValoracion', id);
     // Petición para obtener los datos del registro solicitado.
-    const DATA = await fetchData(CATEGORIA_API, 'readOne', FORM);
+    const DATA = await fetchData(VALORACION_API, 'readOne', FORM);
     // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
     if (DATA.status) {
         // Se muestra la caja de diálogo con su título.
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar Pedido';
+        MODAL_TITLE.textContent = 'Actualizar valoracion';
         // Se prepara el formulario.
         SAVE_FORM.reset();
         // Se inicializan los campos con los datos.
         const ROW = DATA.dataset;
-        ID_PEDIDO.value = ROW.id_categoria;
-        NOMBRE_CATEGORIA.value = ROW.nombre_categoria;
-        DESCRIPCION_CATEGORIA.value = ROW.descripcion_categoria;
+        ID_VALORACION.value = ROW.id_valoracion;
+        CALIFICACION_VALORACION.value = ROW.calificacion;
+        COMENTARIO_VALORACION.value = ROW.comentario;
+        FECHA_VALORACION.value = ROW.fecha_valoracion;
+        if (ROW.estado_valoracion == 0) {
+            ESTADO_VALORACION.checked = false;
+        } else if (ROW.estado_valoracion == 1) {
+            ESTADO_VALORACION.checked = true;
+        } else (
+            console.log(ROW.estado_valoracion)
+        )
+        ESTADO_VALORACION.value =  ROW.estado_valoracion;
+        fillSelect(CLIENTE_API, 'getClientes', 'clienteValoracion', ROW.id_cliente);
+        fillSelect(PRODUCTO_API, 'getProductos', 'productoValoracion', ROW.id_producto);
     } else {
         sweetAlert(2, DATA.error, false);
     }
@@ -153,14 +171,14 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el pedido de forma permanente?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el administrador de forma permanente?');
     // Se verifica la respuesta del mensaje.
     if (RESPONSE) {
         // Se define una constante tipo objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idPedido', id);
+        FORM.append('idValoracion', id);
         // Petición para eliminar el registro seleccionado.
-        const DATA = await fetchData(CATEGORIA_API, 'deleteRow', FORM);
+        const DATA = await fetchData(VALORACION_API, 'deleteRow', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra un mensaje de éxito.
@@ -172,9 +190,3 @@ const openDelete = async (id) => {
         }
     }
 }
-
-/*
-*   Función para abrir un reporte parametrizado de productos de una categoría.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
-*/
