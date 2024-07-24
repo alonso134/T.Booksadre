@@ -46,7 +46,7 @@ const loadTemplate = async () => {
                       <div class="offcanvas-body">
                         <div class="circle-container">
                           <div class="circle">
-                            <img src="https://cdn-icons-png.flaticon.com/512/456/456283.png" alt="Imagen en un círculo">
+                            <img src="https://i1.rgstatic.net/ii/profile.image/11431281124762590-1678095808792_Q512/Jose-Ferrao-10.jpg" alt="Imagen en un círculo">
                           </div>
               
                         </div>          
