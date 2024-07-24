@@ -88,6 +88,17 @@ class ProductoHandler
         return Database::getRow($sql, $params);
     }
 
+
+    public function updateRow()
+    {
+        $sql = 'UPDATE producto
+                SET imagen_producto = ?, nombre_producto = ?, descripcion_producto = ?, precio_producto = ?, estado_producto = ?, id_categoria = ?
+                WHERE id_producto = ?';
+        $params = array($this->imagen, $this->nombre, $this->descripcion, $this->precio, $this->estado, $this->categoria, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    
     public function getCommentsAndRatings()
     {
         $sql = 'SELECT v.id_valoracion, v.id_producto, v.id_cliente, v.calificacion, v.comentario, v.fecha_valoracion, c.nombre_cliente, c.apellido_cliente
