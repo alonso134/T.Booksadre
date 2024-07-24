@@ -21,10 +21,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (DATA.status) {
         // Se inicializan los campos del formulario con los datos del usuario que ha iniciado sesión.
         const ROW = DATA.dataset;
-        NOMBRE_ADMINISTRADOR.value = ROW.nombre_profesor;
-        APELLIDO_ADMINISTRADOR.value = ROW.apellido_profesor;
-        CORREO_ADMINISTRADOR.value = ROW.correo_profesor;
-        ALIAS_ADMINISTRADOR.value = ROW.alias_profesor ;
+        NOMBRE_ADMINISTRADOR.value = ROW.nombre_administrador;
+        APELLIDO_ADMINISTRADOR.value = ROW.apellido_administrador;
+        CORREO_ADMINISTRADOR.value = ROW.correo_administrador;
+        ALIAS_ADMINISTRADOR.value = ROW.alias_administrador;
     } else {
         sweetAlert(2, DATA.error, null);
     }

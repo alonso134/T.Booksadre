@@ -14,9 +14,11 @@ $categoria = new CategoriaData;
 // Se verifica si existen registros para mostrar, de lo contrario se imprime un mensaje.
 if ($dataCategorias = $categoria->readAll()) {
     // Se establece un color de relleno para los encabezados.
-    $pdf->setFillColor(200);
+    $pdf->setFillColor(13, 27, 42);
     // Se establece la fuente para los encabezados.
     $pdf->setFont('Arial', 'B', 11);
+    $pdf->setTextColor(255, 255, 255); // Color de texto blanco para los encabezados
+
     // Se imprimen las celdas con los encabezados.
     $pdf->cell(126, 10, 'Nombre', 1, 0, 'C', 1);
     $pdf->cell(30, 10, 'Precio (US$)', 1, 0, 'C', 1);
@@ -26,6 +28,7 @@ if ($dataCategorias = $categoria->readAll()) {
     $pdf->setFillColor(240);
     // Se establece la fuente para los datos de los productos.
     $pdf->setFont('Arial', '', 11);
+    $pdf->setTextColor(0, 0, 0); // Color de texto negro
 
     // Se recorren los registros fila por fila.
     foreach ($dataCategorias as $rowCategoria) {
