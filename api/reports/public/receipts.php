@@ -34,20 +34,26 @@ if ($detalle_pedido) {
     $pdf->ln(10); // Espacio de línea
 
     // Encabezado de la tabla de detalles de pedido
+    $pdf->setFillColor(13, 27, 42);
     $pdf->setFont('Arial', 'B', 12);
-    $pdf->cell(10, 10, 'No.', 1, 0, 'C');
-    $pdf->cell(80, 10, 'Producto', 1, 0, 'C');
-    $pdf->cell(30, 10, 'Precio', 1, 0, 'C');
-    $pdf->cell(30, 10, 'Cantidad', 1, 1, 'C');
+    $pdf->setTextColor(255, 255, 255); // Color de texto blanco para los encabezados
+    $pdf->cell(10, 10, 'No.', 1, 0, 'C', 1);
+    $pdf->cell(80, 10, 'Producto', 1, 0, 'C', 1);
+    $pdf->cell(30, 10, 'Precio', 1, 0, 'C', 1);
+    $pdf->cell(30, 10, 'Cantidad', 1, 0, 'C', 1);
+    $pdf->cell(30, 10, 'Subtotal', 1, 1, 'C', 1);
 
     // Datos del detalle del pedido
     $pdf->setFont('Arial', '', 12);
+    $pdf->setTextColor(0, 0, 0); // Color de texto negro
     $no = 1;
     foreach ($detalle_pedido as $item) {
+        $subtotal = $item['precio_producto'] * $item['cantidad_producto'];
         $pdf->cell(10, 10, $no++, 1, 0, 'C');
         $pdf->cell(80, 10, $pdf->encodeString($item['nombre_producto']), 1, 0, 'L');
         $pdf->cell(30, 10, number_format($item['precio_producto'], 2), 1, 0, 'R');
-        $pdf->cell(30, 10, $item['cantidad_producto'], 1, 1, 'R');
+        $pdf->cell(30, 10, $item['cantidad_producto'], 1, 0, 'R');
+        $pdf->cell(30, 10, number_format($subtotal, 2), 1, 1, 'R');
     }
 
     // Total de la compra (calcular el total en base a los detalles del pedido)
@@ -55,9 +61,11 @@ if ($detalle_pedido) {
         return $carry + ($item['precio_producto'] * $item['cantidad_producto']);
     }, 0);
 
+    $pdf->setFillColor(13, 27, 42);
     $pdf->setFont('Arial', 'B', 12);
-    $pdf->cell(120, 10, 'Total', 1, 0, 'C');
-    $pdf->cell(30, 10, number_format($total, 2), 1, 1, 'R');
+    $pdf->setTextColor(255, 255, 255); // Color de texto blanco para la celda de Total
+    $pdf->cell(150, 10, 'Total', 1, 0, 'C', 1);
+    $pdf->cell(30, 10, number_format($total, 2), 1, 1, 'R', 1);
 
     // Se llama implícitamente al método footer() y se envía el documento al navegador web.
     $pdf->output('I', 'comprobante_compra.pdf');
