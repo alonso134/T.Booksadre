@@ -110,7 +110,8 @@ async function finishOrder() {
         const DATA = await fetchData(PEDIDO_API, 'finishOrder');
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
-            sweetAlert(1, DATA.message, true, 'index.html');
+            sweetAlert(1, DATA.message, true);
+            openReport();
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -141,5 +142,12 @@ async function openDelete(id) {
             sweetAlert(2, DATA.error, false);
         }
     }
+}
+
+const openReport = () => {
+    // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
+    const PATH = new URL(`${SERVER_URL}reports/public/receipts.php`);
+    // Se abre el reporte en una nueva pestaña.
+    window.open(PATH.href);
 }
 
