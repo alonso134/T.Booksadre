@@ -147,6 +147,14 @@ if (isset($_GET['action'])) {
                 }
 
                 break;
+                case 'top5ClientesConMasPedidos':
+                    if ($result['dataset'] = $pedido->top5ClientesConMasPedidos()) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Top 5 clientes con más pedidos obtenidos correctamente';
+                    } else {
+                        $result['error'] = 'No se pudo obtener el top 5 de clientes con más pedidos';
+                    }
+                    break;
 
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';

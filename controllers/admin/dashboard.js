@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     graficoBarrasCategorias();
     graficoPastelCategorias();
     graficoBarrasClientes();
+    graficoTop5ClientesConMasPedidos();
 });
 
 /*
@@ -97,5 +98,31 @@ const graficoBarrasClientes = async () => {
         }
     } catch (error) {
         console.error('Error fetching client count data:', error);
+    }
+}
+
+const graficoTop5ClientesConMasPedidos = async () => {
+    try {
+        // Petición para obtener los datos del gráfico.
+        const DATA = await fetchData(PEDIDO_API, 'top5ClientesConMasPedidos');
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
+        if (DATA.status) {
+            // Se declaran los arreglos para guardar los datos a graficar.
+            let clientes = [];
+            let totalPedidos = [];
+            // Se recorre el conjunto de registros fila por fila a través del objeto row.
+            DATA.dataset.forEach(row => {
+                // Se agregan los datos a los arreglos.
+                clientes.push(row.nombre_cliente);
+                totalPedidos.push(row.total_pedidos);
+            });
+            // Llamada a la función para generar y mostrar un gráfico de barras.
+            top5ClientesMasPedi('chart10', clientes, totalPedidos, 'Cantidad de pedidos', 'Top 5 clientes con más pedidos');
+        } else {
+            document.getElementById('chart10').remove();
+            console.log(DATA.error);
+        }
+    } catch (error) {
+        console.error('Error fetching top 5 clients with most orders:', error);
     }
 }
