@@ -197,7 +197,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al cambiar la contraseña';
                 }
                 break;
-
+                case 'countClients':
+                    $result['dataset'] = $cliente->countClients();
+                    if ($result['dataset']) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Se encontraron ' . $result['dataset'] . ' clientes en total.';
+                    } else {
+                        $result['error'] = 'No se pudo obtener el conteo de clientes.';
+                    }
+                    break;
             default:
                 $result['error'] = 'Acción no disponible fuera de la sesión';
         }

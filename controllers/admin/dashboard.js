@@ -1,5 +1,6 @@
 // Constante para completar la ruta de la API.
 const PRODUCTO_API = 'services/admin/producto.php';
+const CLIENTE_API = 'services/public/cliente.php';
 
 // Método del evento para cuando el documento ha cargado.
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Llamada a la funciones que generan los gráficos en la página web.
     graficoBarrasCategorias();
     graficoPastelCategorias();
+    graficoBarrasClientes();
 });
 
 /*
@@ -75,5 +77,25 @@ const graficoPastelCategorias = async () => {
     } else {
         document.getElementById('chart2').remove();
         console.log(DATA.error);
+    }
+}
+
+const graficoBarrasClientes = async () => {
+    try {
+        // Petición para obtener los datos del gráfico.
+        const DATA = await fetchData(CLIENTE_API, 'countClients');
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
+        if (DATA.status) {
+            // Se declaran los arreglos para guardar los datos a graficar.
+            let labels = ['Número total de clientes'];
+            let cantidades = [DATA.dataset];
+            // Llamada a la función para generar y mostrar un gráfico de barras. Se encuentra en el archivo components.js
+            clientCountBarGraph('chart4', labels, cantidades, 'Cantidad de clientes', 'Número total de clientes registrados');
+        } else {
+            document.getElementById('chart4').remove();
+            console.log(DATA.error);
+        }
+    } catch (error) {
+        console.error('Error fetching client count data:', error);
     }
 }

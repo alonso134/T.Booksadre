@@ -161,4 +161,12 @@ class ClienteHandler
         $params = array($_SESSION['idCliente']);
         return Database::getRow($sql, $params);
     }
+
+    public function countClients()
+    {
+        $sql = 'SELECT COUNT(*) as client_count FROM cliente';
+        $result = Database::getRow($sql);
+        return $result['client_count'];
+    }
+    
 }
