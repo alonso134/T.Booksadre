@@ -270,4 +270,34 @@ const fetchData = async (filename, action, form = null) => {
         // Se muestra un mensaje en la consola del navegador web cuando ocurre un problema.
         console.log(error);
     }
+
+}
+
+const top5ClientesMasPedi = (canvas, xAxis, yAxis, legend, title) => {
+    let colors = [];
+    xAxis.forEach(() => {
+        colors.push('#' + (Math.random().toString(16)).substring(2, 8));
+    });
+    new Chart(document.getElementById(canvas), {
+        type: 'doughnut',
+        data: {
+            labels: xAxis,
+            datasets: [{
+                label: legend,
+                data: yAxis,
+                backgroundColor: colors
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: title
+                },
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
 }
