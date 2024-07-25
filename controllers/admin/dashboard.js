@@ -1,6 +1,7 @@
 // Constante para completar la ruta de la API.
 const PRODUCTO_API = 'services/admin/producto.php';
 const CLIENTE_API = 'services/public/cliente.php';
+const PEDIDO_API = 'services/public/pedido.php';
 
 // Método del evento para cuando el documento ha cargado.
 document.addEventListener('DOMContentLoaded', () => {

@@ -207,4 +207,17 @@ class PedidoPublicHandler
         $params = array($id_producto, $_SESSION['idCliente']);
         return Database::getRow($sql, $params);
     }
+
+    public function top5ClientesConMasPedidos()
+    {
+        $sql = 'SELECT c.nombre_cliente, COUNT(p.id_pedido) as total_pedidos
+                FROM cliente c
+                JOIN pedido p ON c.id_cliente = p.id_cliente
+                GROUP BY c.id_cliente
+                ORDER BY total_pedidos DESC
+                LIMIT 5';
+        return Database::getRows($sql);
+    }
+
 }
+
