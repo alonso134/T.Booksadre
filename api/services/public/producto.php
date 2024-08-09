@@ -9,7 +9,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null);
     // Se compara la acción a realizar según la petición del controlador.
-    switch ($_GET['action']) {
+    switch ($_GET['-action']) {
         case 'searchRows':
             if (!Validator::validateSearch($_POST['search'])) {
                 $result['error'] = Validator::getSearchError();

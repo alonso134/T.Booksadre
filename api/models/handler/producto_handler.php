@@ -118,6 +118,13 @@ class ProductoHandler
         $params = array($this->categoria);
         return Database::getRows($sql, $params);
     }
+    public function deleteRow()
+        {
+            $sql = 'DELETE FROM producto
+                    WHERE id_producto = ?';
+            $params = array($this->id);
+            return Database::executeRow($sql, $params);
+        }
 
     /*
     *   Métodos para generar gráficos.
