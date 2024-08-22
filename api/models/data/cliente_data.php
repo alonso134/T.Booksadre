@@ -126,6 +126,18 @@ class ClienteData extends ClienteHandler
         }
     }
 
+    
+    public function setToken($value)
+    {
+        if (Validator::validatePassword($value)) {
+            $this->token = password_hash($value, PASSWORD_DEFAULT);
+            return true;
+        } else {
+            $this->data_error = Validator::getPasswordError();
+            return false;
+        }
+    }
+
     public function setEstado($value)
     {
         if (Validator::validateBoolean($value)) {

@@ -22,7 +22,7 @@ if (isset($_GET['action'])) {
                     $result['name'] = $cliente->readOneCorreo($_SESSION['correoCliente']);
                 } else {
                     $result['error'] = 'Correo de usuario indefinido';
-                    $result['name'] ='No se pudo obtener el usuario';
+                    $result['name'] = 'No se pudo obtener el usuario';
                 }
                 break;
             case 'logOut':
@@ -40,39 +40,39 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al leer el perfil';
                 }
                 break;
-                case 'editProfile':
-                    $_POST = Validator::validateForm($_POST);
-                    if (
-                        !$cliente->setNombre($_POST['nombreCliente']) or
-                        !$cliente->setApellido($_POST['apellidoCliente']) or
-                        !$cliente->setCorreo($_POST['correoCliente']) or
-                        !$cliente->setDUI($_POST['duiCliente']) or
-                        !$cliente->setNacimiento($_POST['nacimientoCliente']) or
-                        !$cliente->setTelefono($_POST['telefonoCliente']) 
-                    ) {
-                        $result['error'] = $cliente->getDataError();
-                    } elseif ($cliente->editProfile()) {
-                        $result['status'] = 1;
-                        $result['message'] = 'Perfil modificado correctamente';
-                    } else {
-                        $result['error'] = 'Ocurrió un problema al modificar el perfil';
-                    }
-                    break;
-                case 'changePassword':
-                    $_POST = Validator::validateForm($_POST);
-                    if (!$administrador->checkPassword($_POST['claveActual'])) {
-                        $result['error'] = 'Contraseña actual incorrecta';
-                    } elseif ($_POST['claveNueva'] != $_POST['confirmarClave']) {
-                        $result['error'] = 'Confirmación de contraseña diferente';
-                    } elseif (!$administrador->setClave($_POST['claveNueva'])) {
-                        $result['error'] = $administrador->getDataError();
-                    } elseif ($administrador->changePassword()) {
-                        $result['status'] = 1;
-                        $result['message'] = 'Contraseña cambiada correctamente';
-                    } else {
-                        $result['error'] = 'Ocurrió un problema al cambiar la contraseña';
-                    }
-                    break;
+            case 'editProfile':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$cliente->setNombre($_POST['nombreCliente']) or
+                    !$cliente->setApellido($_POST['apellidoCliente']) or
+                    !$cliente->setCorreo($_POST['correoCliente']) or
+                    !$cliente->setDUI($_POST['duiCliente']) or
+                    !$cliente->setNacimiento($_POST['nacimientoCliente']) or
+                    !$cliente->setTelefono($_POST['telefonoCliente'])
+                ) {
+                    $result['error'] = $cliente->getDataError();
+                } elseif ($cliente->editProfile()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Perfil modificado correctamente';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al modificar el perfil';
+                }
+                break;
+            case 'changePassword':
+                $_POST = Validator::validateForm($_POST);
+                if (!$administrador->checkPassword($_POST['claveActual'])) {
+                    $result['error'] = 'Contraseña actual incorrecta';
+                } elseif ($_POST['claveNueva'] != $_POST['confirmarClave']) {
+                    $result['error'] = 'Confirmación de contraseña diferente';
+                } elseif (!$administrador->setClave($_POST['claveNueva'])) {
+                    $result['error'] = $administrador->getDataError();
+                } elseif ($administrador->changePassword()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Contraseña cambiada correctamente';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al cambiar la contraseña';
+                }
+                break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }
@@ -101,6 +101,7 @@ if (isset($_GET['action'])) {
                 if (!$captcha['success']) {
                     $result['recaptcha'] = 1;
                     $result['error'] = 'No eres humano';*/
+                $token = $cliente->generarCodigoAleatorio();
                 if (!isset($_POST['condicion'])) {
                     $result['error'] = 'Debe marcar la aceptación de términos y condiciones';
                 } elseif (
@@ -111,40 +112,43 @@ if (isset($_GET['action'])) {
                     !$cliente->setDUI($_POST['duiCliente']) or
                     !$cliente->setNacimiento($_POST['nacimientoCliente']) or
                     !$cliente->setTelefono($_POST['telefonoCliente']) or
-                    !$cliente->setClave($_POST['claveCliente'])
+                    !$cliente->setClave($_POST['claveCliente']) or
+                    !$cliente->setToken($token)
                 ) {
                     $result['error'] = $cliente->getDataError();
                 } elseif ($_POST['claveCliente'] != $_POST['confirmarClave']) {
                     $result['error'] = 'Contraseñas diferentes';
                 } elseif ($cliente->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Cuenta registrada correctamente';
+                    $result['message'] = 'Cuenta registrada correctamente su token es: ' . $token;
                 } else {
                     $result['error'] = 'Ocurrió un problema al registrar la cuenta';
                 }
                 break;
-                case 'signUpMovil':
-                    $_POST = Validator::validateForm($_POST);
+            case 'signUpMovil':
+                $token = $cliente->generarCodigoAleatorio();
+                $_POST = Validator::validateForm($_POST);
                 if (
-                        !$cliente->setNombre($_POST['nombreCliente']) or
-                        !$cliente->setApellido($_POST['apellidoCliente']) or
-                        !$cliente->setCorreo($_POST['correoCliente']) or
-                        !$cliente->setDireccion($_POST['direccionCliente']) or
-                        !$cliente->setDUI($_POST['duiCliente']) or
-                        !$cliente->setNacimiento($_POST['nacimientoCliente']) or
-                        !$cliente->setTelefono($_POST['telefonoCliente']) or
-                        !$cliente->setClave($_POST['claveCliente'])
-                    ) {
-                        $result['error'] = $cliente->getDataError();
-                    } elseif ($_POST['claveCliente'] != $_POST['confirmarClave']) {
-                        $result['error'] = 'Contraseñas diferentes';
-                    } elseif ($cliente->createRow()) {
-                        $result['status'] = 1;
-                        $result['message'] = 'Cuenta registrada correctamente';
-                    } else {
-                        $result['error'] = 'Ocurrió un problema al registrar la cuenta';
-                    }
-                    break;
+                    !$cliente->setNombre($_POST['nombreCliente']) or
+                    !$cliente->setApellido($_POST['apellidoCliente']) or
+                    !$cliente->setCorreo($_POST['correoCliente']) or
+                    !$cliente->setDireccion($_POST['direccionCliente']) or
+                    !$cliente->setDUI($_POST['duiCliente']) or
+                    !$cliente->setNacimiento($_POST['nacimientoCliente']) or
+                    !$cliente->setTelefono($_POST['telefonoCliente']) or
+                    !$cliente->setClave($_POST['claveCliente']) or
+                    !$cliente->setToken($token)
+                ) {
+                    $result['error'] = $cliente->getDataError();
+                } elseif ($_POST['claveCliente'] != $_POST['confirmarClave']) {
+                    $result['error'] = 'Contraseñas diferentes';
+                } elseif ($cliente->createRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Cuenta registrada correctamente su token es: ' . $token;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al registrar la cuenta';
+                }
+                break;
             case 'logIn':
                 $_POST = Validator::validateForm($_POST);
                 if (!$cliente->checkUser($_POST['correo'], $_POST['clave'])) {
@@ -152,6 +156,22 @@ if (isset($_GET['action'])) {
                 } elseif ($cliente->checkStatus()) {
                     $result['status'] = 1;
                     $result['message'] = 'Autenticación correcta';
+                } else {
+                    $result['error'] = 'La cuenta ha sido desactivada';
+                }
+                break;
+            case 'recovery':
+                $_POST = Validator::validateForm($_POST);
+                if (!$cliente->checkToken($_POST['correo'], $_POST['token'])) {
+                    $result['error'] = 'Verificación incorrecta';
+                } elseif (
+                    !$cliente->setClave($_POST['clave'])
+                ) {
+                    $result['error'] = $cliente->getDataError();
+                }
+                elseif ($cliente->changePassword()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Contraseña cambiada correctamente';
                 } else {
                     $result['error'] = 'La cuenta ha sido desactivada';
                 }
@@ -197,15 +217,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al cambiar la contraseña';
                 }
                 break;
-                case 'countClients':
-                    $result['dataset'] = $cliente->countClients();
-                    if ($result['dataset']) {
-                        $result['status'] = 1;
-                        $result['message'] = 'Se encontraron ' . $result['dataset'] . ' clientes en total.';
-                    } else {
-                        $result['error'] = 'No se pudo obtener el conteo de clientes.';
-                    }
-                    break;
+            case 'countClients':
+                $result['dataset'] = $cliente->countClients();
+                if ($result['dataset']) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Se encontraron ' . $result['dataset'] . ' clientes en total.';
+                } else {
+                    $result['error'] = 'No se pudo obtener el conteo de clientes.';
+                }
+                break;
             default:
                 $result['error'] = 'Acción no disponible fuera de la sesión';
         }

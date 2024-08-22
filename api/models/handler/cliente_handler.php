@@ -19,6 +19,7 @@ class ClienteHandler
     protected $direccion = null;
     protected $clave = null;
     protected $estado = null;
+    protected $token = null;
 
     /*
     *   Métodos para gestionar la cuenta del cliente.
@@ -51,6 +52,23 @@ class ClienteHandler
         }
     }
 
+    public function checkToken($mail, $token)
+    {
+        $sql = 'SELECT id_cliente, correo_cliente, token, estado_cliente
+                FROM cliente
+                WHERE correo_cliente = ?';
+        $params = array($mail);
+        $data = Database::getRow($sql, $params);
+        if (password_verify($token, $data['token'])) {
+            $this->id = $data['id_cliente'];
+            $this->correo = $data['correo_cliente'];
+            $this->estado = $data['estado_cliente'];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function changePassword()
     {
         $sql = 'UPDATE cliente
@@ -77,15 +95,15 @@ class ClienteHandler
         $params = array($this->estado, $this->id);
         return Database::executeRow($sql, $params);
     }
-    
+
     public function readOneCorreo($correo)
-{
-    $sql = 'SELECT id_cliente, nombre_cliente, apellido_cliente, correo_cliente, dui_cliente, telefono_cliente, nacimiento_cliente, direccion_cliente, estado_cliente
+    {
+        $sql = 'SELECT id_cliente, nombre_cliente, apellido_cliente, correo_cliente, dui_cliente, telefono_cliente, nacimiento_cliente, direccion_cliente, estado_cliente
             FROM cliente
             WHERE correo_cliente = ?';
-    $params = array($correo);
-    return Database::getRow($sql, $params);
-}
+        $params = array($correo);
+        return Database::getRow($sql, $params);
+    }
 
 
     /*
@@ -101,12 +119,33 @@ class ClienteHandler
         $params = array($value, $value, $value);
         return Database::getRows($sql, $params);
     }
+    
+
+    function generarCodigoAleatorio($longitud = 10)
+    {
+        $codigo = '';
+        for ($i = 0; $i < $longitud; $i++) {
+            $codigo .= mt_rand(0, 9);
+        }
+        return $codigo;
+    }
 
     public function createRow()
     {
-        $sql = 'INSERT INTO cliente(nombre_cliente, apellido_cliente, correo_cliente, dui_cliente, telefono_cliente, nacimiento_cliente, direccion_cliente, clave_cliente)
-                VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-        $params = array($this->nombre, $this->apellido, $this->correo, $this->dui, $this->telefono, $this->nacimiento, $this->direccion, $this->clave);
+        $sql = 'INSERT INTO cliente(nombre_cliente, apellido_cliente, correo_cliente, dui_cliente, 
+        telefono_cliente, nacimiento_cliente, direccion_cliente, clave_cliente, token)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $params = array(
+            $this->nombre,
+            $this->apellido,
+            $this->correo,
+            $this->dui,
+            $this->telefono,
+            $this->nacimiento,
+            $this->direccion,
+            $this->clave,
+            $this->token
+        );
         return Database::executeRow($sql, $params);
     }
 
@@ -168,5 +207,4 @@ class ClienteHandler
         $result = Database::getRow($sql);
         return $result['client_count'];
     }
-    
 }
