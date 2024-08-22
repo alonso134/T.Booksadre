@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-07-2024 a las 09:02:48
+-- Tiempo de generación: 22-08-2024 a las 15:31:08
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `booksadre`
 --
-USE booksadre
+
 -- --------------------------------------------------------
 
 --
@@ -88,20 +88,22 @@ CREATE TABLE `cliente` (
   `nacimiento_cliente` date NOT NULL,
   `clave_cliente` varchar(100) NOT NULL,
   `estado_cliente` tinyint(1) NOT NULL DEFAULT 1,
-  `fecha_registro` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=UTF8_UNICODE_CI;
-
-ALTER TABLE cliente
-MODIFY COLUMN token VARCHAR(100) DEFAULT '464134';
+  `fecha_registro` date NOT NULL DEFAULT current_timestamp(),
+  `token` varchar(100) DEFAULT '464134'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`id_cliente`, `nombre_cliente`, `apellido_cliente`, `dui_cliente`, `correo_cliente`, `telefono_cliente`, `direccion_cliente`, `nacimiento_cliente`, `clave_cliente`, `estado_cliente`, `fecha_registro`) VALUES
-(1, 'fernando', 'moreno', '01758997-3', 'fa3528028@gmail.com', '7546-2612', 'fernando', '2020-12-01', '$2y$10$eIFCC.Zt15lGYQA85SgRjuftookqzZEsJ2s9vx7FRvJDpXTZgVasu', 1, '2024-05-23'),
-(2, 'fernando', 'moreni', '46612021-0', 'fernandola017589978@gmail.com', '7541-2512', 'mi casa xd', '2005-02-20', '$2y$10$pNnP30hrCVbE1h96xpUsrep4jwwTOR8ba7.sl2jIGlOu9Zg5a0y86', 1, '2024-07-20'),
-(3, 'alvaro', 'monterrosa', '59453623-0', 'alvarito@gmail.com', '7589-2612', 'mi casa', '2005-02-20', '$2y$10$O9hPgsBjSi8ZRTwIa7YvA.A/hroYLVFwLPfcpT7UMWTxIXzKeBz4a', 1, '2024-07-22');
+INSERT INTO `cliente` (`id_cliente`, `nombre_cliente`, `apellido_cliente`, `dui_cliente`, `correo_cliente`, `telefono_cliente`, `direccion_cliente`, `nacimiento_cliente`, `clave_cliente`, `estado_cliente`, `fecha_registro`, `token`) VALUES
+(1, 'fernando', 'moreno', '01758997-3', 'fa3528028@gmail.com', '7546-2612', 'fernando', '2020-12-01', '$2y$10$eIFCC.Zt15lGYQA85SgRjuftookqzZEsJ2s9vx7FRvJDpXTZgVasu', 1, '2024-05-23', '464134'),
+(2, 'fernando', 'moreni', '46612021-0', 'fernandola017589978@gmail.com', '7541-2512', 'mi casa xd', '2005-02-20', '$2y$10$pNnP30hrCVbE1h96xpUsrep4jwwTOR8ba7.sl2jIGlOu9Zg5a0y86', 1, '2024-07-20', '464134'),
+(3, 'alvaro', 'monterrosa', '59453623-0', 'alvarito@gmail.com', '7589-2612', 'mi casa', '2005-02-20', '$2y$10$O9hPgsBjSi8ZRTwIa7YvA.A/hroYLVFwLPfcpT7UMWTxIXzKeBz4a', 1, '2024-07-22', '464134'),
+(4, 'Adiel', 'Montepeque', '07442606-6', 'adielmontepeque@gmail.com', '6823-7472', 'Mi casa', '2006-05-06', '$2y$10$nRF4hKYAIeyASFAuzcZniuGR37dTz1ct2.qG/niXBOfLpu20y/prq', 1, '2024-08-21', '464134'),
+(6, 'Adiel', 'Montepeque', '12324566-7', 'adieleladiel@gmail.com', '6823-7472', 'Mi casa', '2006-05-06', '$2y$10$6j3/Sq9KoEpZmz6UZRuYiusJJqHFbjzn2O49JDwK5uJPGzDbZNOvS', 1, '2024-08-21', '$2y$10$zqCsfoL4/nhFjU1eo0yrz.H.tpyO7JpnZrg4m.8vgUBfXoW5jZrze'),
+(7, 'Indu', 'Ramón', '77854565-2', 'induramon@gmail.com', '7888-8888', 'Su casa', '1924-08-21', '$2y$10$bCC22tOg4i6Sd7XY9b9RKulTgw62SoXeJW3auRfWibUVaRbJar7n2', 1, '2024-08-21', '$2y$10$JsORazYYDWOR1C5pEkXG9.aOzmBWKydYvG.O4Ko4bVg3GOH/5Ihw.'),
+(8, 'Oso', 'Monterrosa', '74545665-5', 'ricardomonterrosa@gmail.com', '7845-6389', 'Su casa', '1980-05-07', '$2y$10$uvCiKjS3G5mZJHL4Ex90G.oqtiDF5DCSyw4vgsmP2wcy17cOCKfBu', 1, '2024-08-21', '$2y$10$Rq2iFmgaFRdD9I1vpz2hZ.x1xmvNXS.61XQvm60yQSMMe4AUPi996');
 
 -- --------------------------------------------------------
 
@@ -316,7 +318,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_cliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_pedido`
