@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `booksadre`
 --
-
+USE booksadre
 -- --------------------------------------------------------
 
 --
@@ -89,7 +89,10 @@ CREATE TABLE `cliente` (
   `clave_cliente` varchar(100) NOT NULL,
   `estado_cliente` tinyint(1) NOT NULL DEFAULT 1,
   `fecha_registro` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=UTF8_UNICODE_CI;
+
+ALTER TABLE cliente
+MODIFY COLUMN token VARCHAR(100) DEFAULT '464134';
 
 --
 -- Volcado de datos para la tabla `cliente`
